@@ -13,4 +13,7 @@ public class RefreshRequest
         AccessToken = token;
         RefreshToken = refreshToken;
     }
+    
+    [JsonConstructor]
+    public RefreshRequest(){}
 }

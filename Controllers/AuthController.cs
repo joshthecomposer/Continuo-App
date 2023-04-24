@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text;
 
 using MyApp.Models;
@@ -91,22 +92,25 @@ public class AuthController : ControllerBase
             {
                 return BadRequest(error);
             }
+
+            List<RefreshToken> rfsToDelete = db.RefreshTokens.Where(r => r.UserId == check.UserId).ToList();
+            db.RefreshTokens.RemoveRange(rfsToDelete);
             RefreshToken newRefreshToken = GenerateRefreshToken(check.UserId);
             db.RefreshTokens.Add(newRefreshToken);
             await db.SaveChangesAsync();
             string token = GenerateAccessToken(check.UserId);
 
-            return new UserWithToken(check, token, newRefreshToken.Value);
+            return Ok(new UserWithToken(check, token, newRefreshToken.Value));
         }
         else
         {
             return BadRequest(ModelState);
+
         }
     }
 //=============================================================
 //=========JWT GENERATION VALIDATION AND REFRESH===============
 
-    //TODO: Make everything here async.
     private string GenerateAccessToken(int userId)
     {
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -117,27 +121,12 @@ public class AuthController : ControllerBase
             {
                 new Claim(ClaimTypes.Name, Convert.ToString(userId))
             }),
-            Expires = DateTime.UtcNow.AddMinutes(30),
+            Expires = DateTime.UtcNow.AddMinutes(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
             SecurityAlgorithms.HmacSha256Signature)
         };
         SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
-    }
-
-    private RefreshToken GenerateRefreshToken(int userId)
-    {
-        RefreshToken rt = new();
-
-        byte[] rn = new byte[32];
-        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(rn);
-            rt.Value = Convert.ToBase64String(rn);
-        }
-        rt.UserId = userId;
-        rt.ExpiryDate = DateTime.UtcNow.AddMonths(6);
-        return rt;
     }
 
     private bool ValidateRefreshToken(User user, string refreshToken)
@@ -151,20 +140,40 @@ public class AuthController : ControllerBase
         }
         return false;
     }
+    private RefreshToken GenerateRefreshToken(int userId)
+    {
+        RefreshToken rt = new();
 
-    [HttpPost("tokens/refresh")]
-    public async Task<ActionResult<RefreshRequest>> DoRefreshToken([FromBody] RefreshRequest refreshRequest)
+        byte[] rn = new byte[32];
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(rn);
+            rt.Value = Convert.ToBase64String(rn);
+        }
+        rt.UserId = userId;
+        rt.ExpiryDate = DateTime.UtcNow.AddMonths(1);
+        return rt;
+    }
+
+
+    [HttpPost("tokens/refresh/{userId}")]
+    public async Task<ActionResult<RefreshRequest>> DoRefreshToken([FromBody] RefreshRequest refreshRequest, int userId)
     {
         //TODO: Make logic in client that tries to refresh token if something fails?
         if (ModelState.IsValid)
         {
             string accessToken = refreshRequest.AccessToken;
             string refreshToken = refreshRequest.RefreshToken;
-
+            bool claimIsValid = VerifyClaim(refreshRequest.AccessToken, userId);
+            if (!claimIsValid)
+            {
+                return BadRequest("Claim to this token was invalid.");
+            }
+            Console.WriteLine("WE GOT PAST THE VERIFICATION FALSLY");
             var principal = GetPrincipalFromExpiredToken(accessToken);
             if (principal == null)
             {
-                BadRequest("Invalid access token or refresh token");
+                return BadRequest("Invalid access token or refresh token");
             }
             int id = Int32.Parse(principal!.Identity!.Name!);
             var user = await db.Users.Where(u => u.UserId == id).FirstOrDefaultAsync();
@@ -204,16 +213,23 @@ public class AuthController : ControllerBase
             throw new SecurityTokenException("Invalid token");
 
         return principal;
-
     }
 
     public static bool VerifyClaim(AuthenticationHeaderValue input, int id)
     {   
         JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
         string? credentials = input.Parameter;
-        Console.WriteLine("INPUT PARAMETER ON VERIFY CLAIM IS: " + credentials);
+        Console.WriteLine("RUNNING REGULAR VERIFY CLAIM FUNCTION WITH TOKEN: " + credentials);
         Claim? verifiedClaim = handler.ReadJwtToken(credentials).Claims.Where(c=>c.Value == id.ToString()).FirstOrDefault();
         return verifiedClaim != null;
+    }
+    public static bool VerifyClaim(string input, int id)
+    {   
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        string? credentials = input;
+        Console.WriteLine("RUNNING OVERLOADED VERIFY CLAIM FUNCTION WITH TOKEN: " + credentials);
+        Claim? verifiedClaim = handler.ReadJwtToken(credentials).Claims.Where(c=>c.Value == id.ToString()).FirstOrDefault();
+        return verifiedClaim == null ? false : true;
     }
 
 //==================================================

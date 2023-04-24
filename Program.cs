@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 using System.Text;
 
 using MyApp.Data;
@@ -8,14 +9,14 @@ using MyApp.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("AWSConnection");
 var jwtSecret = builder.Configuration["JWTSettings:SecretKey"];
 var key = Encoding.ASCII.GetBytes(builder.Configuration["JWTSettings:SecretKey"]!);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors();
 builder.Services.AddDbContext<DBContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -38,7 +39,7 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = false,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
-    };
+        };
     });
 
 var app = builder.Build();
@@ -62,13 +63,29 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCors(cfg => cfg.AllowAnyOrigin());
+app.UseCors(cfg => cfg
+    .WithOrigins(new[]{"http://localhost:5000", "http://localhost:8000"})
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials());
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
-        name: "About",
-        pattern: "about",
+        name: "Login",
+        pattern: "login",
+        defaults: new { controller = "Public", action = "Index" }
+);
+
+app.MapControllerRoute(
+        name: "Register",
+        pattern: "register",
+        defaults: new { controller = "Public", action = "Index" }
+);
+
+app.MapControllerRoute(
+        name: "Dashboard",
+        pattern: "dashboard",
         defaults: new { controller = "Public", action = "Index" }
 );
 
