@@ -10,8 +10,8 @@ import InstrumentForm from './pages/InstrumentForm'
 import { ApiUrlContext } from './components/ApiUrlContext'
 
 function App() {
-    const apiUrl = "http://localhost:5000/api/";
-//  const apiUrl = "http://myapp1-dev.eba-jpbu45gu.us-east-1.elasticbeanstalk.com/api/";
+//  const apiUrl = "http://myapp2-dev.eba-4wmnp32y.us-east-1.elasticbeanstalk.com/api/";
+ const apiUrl = "http://localhost:5000/api/";
 
   return (
       <ApiUrlContext.Provider value={apiUrl}>
