@@ -9,7 +9,7 @@ export default defineConfig({
         jsxInject: `import React from 'react';`
       },
     server: {
-        port: 5000,
+        port: 8000,
     },
     build: {
         outDir: "../wwwroot/client",

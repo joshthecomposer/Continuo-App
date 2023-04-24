@@ -1,8 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { ApiUrlContext } from '../components/ApiUrlContext'
 
 const Login = () => {
+    const apiUrl = useContext(ApiUrlContext);
     const navigate = useNavigate();
     const [loginUser, setLoginUser] = useState({
         email: "",
@@ -15,8 +17,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(loginUser);
-        axios.post("http://localhost:5000/api/auth/login", loginUser)
+        axios.post(apiUrl + "auth/login", loginUser)
             .then(res => {
                 sessionStorage.clear();
                 Object.assign(sessionStorage, {

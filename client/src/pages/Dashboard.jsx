@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import axios from "axios"
+import { ApiUrlContext } from "../components/ApiUrlContext"
 
 const Dashboard = () => {
+    const effectRan = useRef(false);
+    const apiUrl = useContext(ApiUrlContext);
     const [result, setResult] = useState({
         Item1: "",
         Item2: ""
@@ -14,32 +17,41 @@ const Dashboard = () => {
     const config = {
         headers: {Authorization:`Bearer ${jwt}`}
     };
+
     useEffect(() => {
-        axios.get("http://localhost:5000/api/users/" + sessionId + "/dashboard", config)
-            .then(res => {
-                console.log("VALID TOKEN")
-                console.log(res.data)
-                setResult(res.data);
-            })
-            .catch(err => {
-                console.log("INVALID TOKEN")
-                console.log(err)
-                axios.post("http://localhost:5000/api/auth/tokens/refresh/" + sessionId, { accessToken: jwt, refreshToken: rft })
-                    .then(res => {
-                        console.log(res.data)
-                        Object.assign(sessionStorage, {
-                            jwt: res.data.accessToken,
-                            rft: res.data.refreshToken
+        if (effectRan.current === false) {
+            axios.get(apiUrl + "users/" + sessionId + "/dashboard", config)
+                .then(res => {
+                    console.log(res.data)
+                    setResult(res.data);
+                })
+                .catch(err => {
+                    console.log(err)
+                    axios.post(apiUrl + "auth/tokens/refresh/" + sessionId, { accessToken: jwt, refreshToken: rft })
+                        .then(res => {
+                            console.log(res.data)
+                            Object.assign(sessionStorage, {
+                                jwt: res.data.accessToken,
+                                rft: res.data.refreshToken
+                            })
+                            axios.get(apiUrl + "users/" + sessionId + "/dashboard", {headers: {Authorization:`Bearer ${res.data.accessToken}`}})
+                                .then(res => {
+                                    console.log(res.data)
+                                    setResult(res.data);
+                                })
+                                .catch(err => {
+                                    navigate("/login");
+                                })
                         })
-                        setResult(res.data);
-                    })
-                    .catch(err => {
-                        console.log(err.data);
-                        sessionStorage.clear();
-                        navigate("/login");
-                    })
-            });
-    },[result.Item1, result.Item2])
+                        .catch(err => {
+                            console.log(err.data);
+                            sessionStorage.clear();
+                            navigate("/login");
+                        })
+                });
+            return () => { effectRan.current = true };
+        }
+    }, [])
 
     return (
         <>

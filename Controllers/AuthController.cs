@@ -27,6 +27,20 @@ public class AuthController : ControllerBase
 
 //============REGISTER AND CONFIRM CREATED USER=============
 
+    [HttpGet("test")]
+    public async Task<ActionResult<User>> Test()
+    {
+        User? check = await db.Users.Where(u => u.UserId > 0).FirstOrDefaultAsync();
+        if (check == null)
+        {
+            return BadRequest("WE TRIED TO CHECK BUT IZZZ NOT THERE");
+        }
+        else
+        {
+            return check;
+        }
+    }
+
     [HttpPost("register")]
     public async Task<ActionResult<User>> Create([FromBody] User newUser)
     {
@@ -114,7 +128,7 @@ public class AuthController : ControllerBase
     private string GenerateAccessToken(int userId)
     {
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        byte[] key = Encoding.ASCII.GetBytes(_config["JWTSettings:SecretKey"]!);
+        byte[] key = Encoding.ASCII.GetBytes(_config["JWTSecretKey"]!);
         SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]

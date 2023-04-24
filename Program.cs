@@ -7,11 +7,10 @@ using System.Text;
 using MyApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("AWSConnection");
-var jwtSecret = builder.Configuration["JWTSettings:SecretKey"];
-var key = Encoding.ASCII.GetBytes(builder.Configuration["JWTSettings:SecretKey"]!);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var jwtSecret = builder.Configuration["JWTSecretKey"];
+var key = Encoding.ASCII.GetBytes(jwtSecret!);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -63,11 +62,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCors(cfg => cfg
-    .WithOrigins(new[]{"http://localhost:5000", "http://localhost:8000"})
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials());
+app.UseCors(cfg => cfg.AllowAnyOrigin());
 
 app.UseAuthorization();
 

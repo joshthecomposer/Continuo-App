@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom"
-import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useState, useContext, useRef } from "react"
 import axios from "axios"
+import { ApiUrlContext } from "../components/ApiUrlContext"
 
 const Register = () => {
+    const apiUrl = useContext(ApiUrlContext)
+    const navigate = useNavigate();
     const [newUser, setNewUser] = useState({
         firstName: "",
         lastName: "",
@@ -15,9 +18,10 @@ const Register = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:5000/api/auth/register", newUser)
+        axios.post(apiUrl + "auth/register", newUser)
             .then(res => {
                 console.log(res);
+                navigate("/login");
             })
             .catch(err => console.log(err.response.data));
     }
