@@ -27,34 +27,14 @@ public class AuthController : ControllerBase
 
 //============REGISTER AND CONFIRM CREATED USER=============
 
-    [HttpGet("test")]
-    public async Task<ActionResult<User>> Test()
-    {
-        User? check = await db.Users.Where(u => u.UserId > 0).FirstOrDefaultAsync();
-        if (check == null)
-        {
-            return BadRequest("WE TRIED TO CHECK BUT IZZZ NOT THERE");
-        }
-        else
-        {
-            return check;
-        }
-    }
-
     [HttpPost("register")]
     public async Task<ActionResult<User>> Create([FromBody] User newUser)
     {
         if (ModelState.IsValid)
         {
-            User? check = await db.Users.Where(u => u.Email == newUser.Email).FirstOrDefaultAsync();
-            if (check != null)
-            {
-                return BadRequest("The specified user already exists.");
-            }
             // string key = "b14ca5898a4e4133bbce2ea2315a1916";
             // newUser.Password = AesOperation.DecryptString(key, newUser.Password);
             // newUser.Confirm = AesOperation.DecryptString(key, newUser.Confirm);
-
             PasswordHasher<User> hasher = new PasswordHasher<User>();
             newUser.Password = hasher.HashPassword(newUser, newUser.Password);
             db.Add(newUser);

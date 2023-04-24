@@ -1,6 +1,7 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MyApp.CustomAnnotations;
 
 namespace MyApp.Models;
 public class User : BaseEntity
@@ -13,7 +14,7 @@ public class User : BaseEntity
     [Required(ErrorMessage = "Field is required.")]
     [MinLength(2, ErrorMessage = "At least two characters.")]
     public string LastName { get; set; }
-    [Required(ErrorMessage = "Field is required.")]
+    [UniqueEmail]
     [EmailAddress(ErrorMessage = "Invalid Email.")]
     public string Email { get; set; }
     [Required(ErrorMessage = "Field is required.")]
