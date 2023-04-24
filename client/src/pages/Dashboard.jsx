@@ -3,6 +3,7 @@ import { useState, useEffect, useContext, useRef, useLayoutEffect } from "react"
 import axios from "axios"
 import { ApiUrlContext } from "../components/ApiUrlContext"
 import MobileNav from "../components/MobileNav"
+import {ReactComponent as AuxPerc} from "../assets/AuxPerc"
 
 const Dashboard = () => {
     const colorMap = {
@@ -94,7 +95,7 @@ const Dashboard = () => {
                     <h1 className="text-xl uppercase font-oswald font-thin">Recent <span className="font-bold">Activity</span></h1>
                     <div className="w-full px-5 flex flex-col gap-3">
                         <div className="w-full bg-neutral-700 h-[40px]">
-
+                            <AuxPerc />
                         </div>
                         <div className="w-full bg-neutral-700 h-[40px]">
 

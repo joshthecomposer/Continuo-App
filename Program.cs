@@ -8,7 +8,7 @@ using MyApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("AWSConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var jwtSecret = builder.Configuration["JWTSecretKey"];
 var key = Encoding.ASCII.GetBytes(jwtSecret!);
 builder.Services.AddControllersWithViews();
