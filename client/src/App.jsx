@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Data from './pages/Data'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
+import InstrumentForm from './pages/InstrumentForm'
 import { ApiUrlContext } from './components/ApiUrlContext'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/data" element={<Data />} />
+            <Route path="/instrument/create" element={<InstrumentForm />} />
         </Routes>
     </ApiUrlContext.Provider>
   )

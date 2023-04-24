@@ -12,6 +12,8 @@ public class UserNoPassword
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
 
+    public List<Instrument> Instruments { get; set; }
+
     public UserNoPassword(User user)
     {
         UserId = user.UserId;
@@ -21,5 +23,7 @@ public class UserNoPassword
 
         CreatedAt = user.CreatedAt;
         UpdatedAt = user.UpdatedAt;
+
+        Instruments = user.Instruments;
     }
 }

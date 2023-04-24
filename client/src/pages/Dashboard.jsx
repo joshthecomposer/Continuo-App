@@ -1,14 +1,27 @@
-import { useNavigate } from "react-router-dom"
-import { useState, useEffect, useContext, useRef } from "react"
+import { useNavigate, Link } from "react-router-dom"
+import { useState, useEffect, useContext, useRef, useLayoutEffect } from "react"
 import axios from "axios"
 import { ApiUrlContext } from "../components/ApiUrlContext"
+import MobileNav from "../components/MobileNav"
 
 const Dashboard = () => {
+    const colorMap = {
+        neutral: "bg-neutral-800",
+        red: "bg-red-800",
+        orange: "bg-orange-800",
+        yellow: "bg-yellow-800",
+        green: "bg-green-800",
+        blue: "bg-blue-800",
+        purple: "bg-purple-800",
+        pink: "bg-pink-800"
+    }
     const effectRan = useRef(false);
     const apiUrl = useContext(ApiUrlContext);
-    const [result, setResult] = useState({
-        Item1: "",
-        Item2: ""
+    const [dashboardData, setDashboardData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        instruments: []
     });
     const navigate = useNavigate();
     const sessionId = sessionStorage.getItem('userId');
@@ -23,7 +36,7 @@ const Dashboard = () => {
             axios.get(apiUrl + "users/" + sessionId + "/dashboard", config)
                 .then(res => {
                     console.log(res.data)
-                    setResult(res.data);
+                    setDashboardData(res.data);
                 })
                 .catch(err => {
                     console.log(err)
@@ -37,7 +50,7 @@ const Dashboard = () => {
                             axios.get(apiUrl + "users/" + sessionId + "/dashboard", {headers: {Authorization:`Bearer ${res.data.accessToken}`}})
                                 .then(res => {
                                     console.log(res.data)
-                                    setResult(res.data);
+                                    setDashboardData(res.data);
                                 })
                                 .catch(err => {
                                     navigate("/login");
@@ -55,8 +68,43 @@ const Dashboard = () => {
 
     return (
         <>
-            <h1 className="text-xl text-neutral-100 text-center">{result.Item1}</h1>
-            <h1 className="text-xl text-neutral-100 text-center">{result.Item2}</h1>
+            <MobileNav />
+            <div className="w-full text-neutral-300 text-center text-neutral-300 flex flex-col">
+                <div className="py-2 px-2 max-h-1/2 flex flex-col flex-wrap gap-3 justify-center items-center bg-neutral-700 bg-opacity-10">
+                    <h1 className="text-xl uppercase font-oswald text-neutral-300">Tap to begin practice</h1>
+                    <div className="flex gap-4 flex-wrap justify-center">
+                        {
+                            dashboardData.instruments.length === 0 ? <p className="bg-neutral-800 p-2 rounded-lg">No Instruments, <Link className="underline italic" to="/instrument/create">Add One</Link></p> :
+                                dashboardData.instruments.map((i) => (
+                                    <div
+                                        key={i.instrumentId}
+                                        className={`w-20 h-20 rounded-lg flex items-center justify-center ${colorMap[i.color]}`}
+                                    >
+                                        {i.name}
+                                    </div>
+                                ))
+                        }
+                    </div>
+                    {
+                        dashboardData.instruments.length !== 0 ? <Link className="underline italic tracking-wider font-oswald font-light text-indigo-500" to="/instrument/create">Add Instruments</Link> :
+                            null
+                    }
+                </div>
+                <div className="py-2 px-2 max-h-1/2 flex flex-col flex-wrap gap-3 justify-center items-center bg-opacity-10">
+                    <h1 className="text-xl uppercase font-oswald font-thin">Recent <span className="font-bold">Activity</span></h1>
+                    <div className="w-full px-5 flex flex-col gap-3">
+                        <div className="w-full bg-neutral-700 h-[40px]">
+
+                        </div>
+                        <div className="w-full bg-neutral-700 h-[40px]">
+
+                        </div>
+                        <div className="w-full bg-neutral-700 h-[40px]">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

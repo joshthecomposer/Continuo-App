@@ -91,6 +91,12 @@ app.MapControllerRoute(
 );
 
 app.MapControllerRoute(
+        name: "Instruments",
+        pattern: "instrument/{*url}",
+        defaults: new { controller = "Public", action = "Index" }
+);
+
+app.MapControllerRoute(
     name: "default",
     pattern: "/",
     defaults: new { controller = "Public", action = "Index" }
