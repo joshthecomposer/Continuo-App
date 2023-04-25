@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Models;
-public class Instrument
+public class Instrument : BaseEntity
 {
     [Key]
     public int InstrumentId { get; set; }
@@ -12,9 +12,6 @@ public class Instrument
     public string Color { get; set; } = "neutral";
     [Required]
     public string Image { get; set; }
-    //TODO: Abstract away the datetimes into a base class.
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
     //Foreign Keys
     [Required(ErrorMessage = "UserId is required")]
     public int UserId { get; set; }

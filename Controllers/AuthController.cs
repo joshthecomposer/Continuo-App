@@ -153,7 +153,6 @@ public class AuthController : ControllerBase
     [HttpPost("tokens/refresh/{userId}")]
     public async Task<ActionResult<RefreshRequest>> DoRefreshToken([FromBody] RefreshRequest refreshRequest, int userId)
     {
-        //TODO: Make logic in client that tries to refresh token if something fails?
         if (ModelState.IsValid)
         {
             string accessToken = refreshRequest.AccessToken;
