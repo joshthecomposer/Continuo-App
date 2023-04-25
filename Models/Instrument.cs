@@ -10,6 +10,7 @@ public class Instrument
     [MinLength(2, ErrorMessage = "At least two characters.")]
     public string Name { get; set; }
     public string Color { get; set; } = "neutral";
+    [Required]
     public string Image { get; set; }
     //TODO: Abstract away the datetimes into a base class.
     public DateTime CreatedAt { get; set; } = DateTime.Now;

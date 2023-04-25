@@ -4,6 +4,8 @@ import axios from "axios"
 import { ApiUrlContext } from "../components/ApiUrlContext"
 import MobileNav from "../components/MobileNav"
 import BassClar from "../assets/BassClar"
+import Cello from "../assets/Cello"
+import Flute from "../assets/Flute"
 
 const Dashboard = () => {
     const colorMap = {
@@ -15,6 +17,11 @@ const Dashboard = () => {
         blue: "bg-blue-800",
         purple: "bg-purple-800",
         pink: "bg-pink-800"
+    }
+    const instrumentMap = {
+        BassClar: <BassClar width="50px" height="50px" />,
+        Cello: <Cello width="50px" height="50px"/>,
+        Flute: <Flute width="50px" height="50px"/>
     }
     const effectRan = useRef(false);
     const apiUrl = useContext(ApiUrlContext);
@@ -79,8 +86,9 @@ const Dashboard = () => {
                                 dashboardData.instruments.map((i) => (
                                     <div
                                         key={i.instrumentId}
-                                        className={`w-20 h-20 rounded-lg flex items-center justify-center ${colorMap[i.color]}`}
+                                        className={`w-20 h-20 rounded-lg flex flex-col items-center justify-center ${colorMap[i.color]}`}
                                     >
+                                        {instrumentMap[i.image]}
                                         {i.name}
                                     </div>
                                 ))
@@ -95,7 +103,7 @@ const Dashboard = () => {
                     <h1 className="text-xl uppercase font-oswald font-thin">Recent <span className="font-bold">Activity</span></h1>
                     <div className="w-full px-5 flex flex-col gap-3">
                         <div className="w-full bg-neutral-700">
-                            <BassClar width="50px" height="50px" />
+                            
                         </div>
                     </div>
                 </div>

@@ -39,7 +39,8 @@ public class UserController : ControllerBase
                 {
                     InstrumentId = i.InstrumentId,
                     Name = i.Name,
-                    Color= i.Color
+                    Color= i.Color,
+                    Image = i.Image
                 })
             })
             .FirstOrDefaultAsync();

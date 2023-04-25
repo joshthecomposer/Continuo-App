@@ -10,7 +10,8 @@ const InstrumentForm = () => {
     const [newInstrument, setNewInstrument] = useState({
         Name: "",
         UserId: userId,
-        Color: "neutral"
+        Color: "neutral",
+        Image: ""
     });
     const jwt = sessionStorage.getItem('jwt');
     const config = {
@@ -79,6 +80,20 @@ const InstrumentForm = () => {
                                 <option value="blue">Blue</option>
                                 <option value="purple">Purple</option>
                                 <option value="pink">Pink</option>
+                            </select>
+                            <label className="flex gap-3 uppercase tracking-wide text-neutral-100 text-xs font-bold">
+                            Icon
+                            </label>
+                            <select
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white"
+                                type="text"
+                                placeholder="Cello"
+                                onChange={handleChange}
+                                value={newInstrument.Image}
+                                name="Image">
+                                <option value="BassClar">Clarinet</option>
+                                <option value="Cello">Cello</option>
+                                <option value="Flute">Flute</option>
                             </select>
                         </div>
                     </div>
