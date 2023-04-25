@@ -3,7 +3,6 @@ import {Routes, Route, Link} from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Data from './pages/Data'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import InstrumentForm from './pages/InstrumentForm'
@@ -20,7 +19,6 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/data" element={<Data />} />
             <Route path="/instrument/create" element={<InstrumentForm />} />
         </Routes>
     </ApiUrlContext.Provider>
