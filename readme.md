@@ -18,7 +18,7 @@ Live Link: *Coming soon (trying to save money)*
 * AWS Elastic Beanstalk
 * AWS RDS
 
-# Minimum Viable Product
+## Minimum Viable Product
 - [x] Authentication
 - [x] Authorization views through JWT and Refresh Token
 - [ ] Dynamic Calendar View
@@ -28,6 +28,7 @@ Live Link: *Coming soon (trying to save money)*
 - [ ] Practice Session state is cached on DB and can be accessed across any authenticated devices.
 - [x] CI/CD Through AWS Elastic Beanstalk
 
-<img src='./GithubImg/login.png' height='350'>
-<img src='./GithubImg/register.png' height='350'><br>
+<img src='./GithubImg/login.png' height='350'> <img src='./GithubImg/register.png' height='350'>
 <img src='./GithubImg/dashboard.png' height='350'>
+
+
