@@ -5,6 +5,10 @@ Live Link: *Coming soon (trying to save money)*
 
 ## Technology Stack
 
+## Planning
+* Figma
+* MySQL workbench (ERD Design/Visualization)
+
 ### Front End
 * React (Vite) / Asp.Net MVC
 * TailwindCSS
@@ -21,14 +25,14 @@ Live Link: *Coming soon (trying to save money)*
 ## Minimum Viable Product
 - [x] Authentication
 - [x] Authorization views through JWT and Refresh Token
-- [ ] Dynamic Calendar View
+- [X] Dynamic Calendar View
 - [ ] Many to Many Association between Practice Tasks and Practice sessions.
+- [x] User instrument creation with icon selection
 - [ ] One Practice Session can involve multiple instruments.
 - [ ] Metronome for use during practice.
 - [ ] Practice Session state is cached on DB and can be accessed across any authenticated devices.
 - [x] CI/CD Through AWS Elastic Beanstalk
 
 <img src='./GithubImg/login.png' height='350'> <img src='./GithubImg/register.png' height='350'>
-<img src='./GithubImg/dashboard.png' height='350'>
-
-
+<img src='./GithubImg/dashboard.png' height='350'><br>
+<img src='./GithubImg/calendar.png' height='250'>
