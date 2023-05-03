@@ -53,4 +53,19 @@ public class InstrumentController : ControllerBase
         return BadRequest(new{Message="Something went wrong when attempting to save the instrument in the database."});
     }
 
+    [HttpDelete]
+    public async Task<ActionResult<Instrument>> DestroyInstrument([FromBody] Instrument instrument)
+    {
+        try
+        {
+            db.Remove(instrument);
+            await db.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return BadRequest(new { message = "Something went wrong when trying to delete the instrument..."});
+        }
+        return Ok(instrument);
+    }
 }

@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom"
 import { useState, useEffect, useContext, useRef, useLayoutEffect } from "react"
 import axios from "axios"
+import {BsMusicNoteList} from 'react-icons/bs'
 import { ApiUrlContext } from "../components/ApiUrlContext"
 import MobileNav from "../components/MobileNav"
 import BassClar from "../assets/BassClar"
@@ -84,13 +85,17 @@ const Dashboard = () => {
                         {
                             dashboardData.instruments.length === 0 ? <p className="bg-neutral-800 p-2 rounded-lg">No Instruments, <Link className="underline italic" to="/instrument/create">Add One</Link></p> :
                                 dashboardData.instruments.map((i) => (
-                                    <div
-                                        key={i.instrumentId}
-                                        className={`w-20 h-20 rounded-lg flex flex-col items-center justify-center ${colorMap[i.color]}`}
-                                    >
-                                        {instrumentMap[i.image]}
-                                        {i.name}
-                                    </div>
+                                    <Link key={i.instrumentId} to={`/instrument/practice?instrument=${i.name}`}>
+                                        <div
+                                            className={`w-20 h-20 rounded-lg overflow-hidden flex flex-col items-center justify-center ${colorMap[i.color]}`}
+                                        >
+                                            {/* <div className="flex flex-row justify-end w-full">
+                                                <div className="w-[20px] h-[20px] bg-neutral-300"></div>
+                                            </div> */}
+                                            {instrumentMap[i.image]}
+                                            {i.name}
+                                        </div>
+                                    </Link>
                                 ))
                         }
                     </div>
@@ -107,6 +112,9 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="bg-indigo-700 w-[40px] h-[40px] rounded-full fixed bottom-0 right-0 m-5 shadow-lg flex justify-center items-center">
+                <BsMusicNoteList className="text-neutral-300" />
             </div>
         </>
     )
