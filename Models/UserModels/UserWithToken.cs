@@ -11,6 +11,8 @@ public class UserWithToken
     public string LastName { get; set; }
     public string Email { get; set; }
 
+    public List<Instrument> Instruments { get; set; } = new List<Instrument>();
+
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
 
@@ -22,6 +24,8 @@ public class UserWithToken
         FirstName = user.FirstName;
         LastName = user.LastName;
         Email = user.Email;
+
+        Instruments = user.Instruments;
 
         CreatedAt = user.CreatedAt;
         UpdatedAt = user.UpdatedAt;

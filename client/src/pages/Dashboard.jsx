@@ -24,55 +24,24 @@ const Dashboard = () => {
         Cello: <Cello width="50px" height="50px"/>,
         Flute: <Flute width="50px" height="50px"/>
     }
-    const effectRan = useRef(false);
-    const apiUrl = useContext(ApiUrlContext);
     const [dashboardData, setDashboardData] = useState({
+        userId:"",
         firstName: "",
         lastName: "",
         email: "",
         instruments: []
     });
+    const effectRan = useRef(false);
     const navigate = useNavigate();
-    const sessionId = sessionStorage.getItem('userId');
-    const jwt = sessionStorage.getItem('jwt');
-    const rft = sessionStorage.getItem("rft");
-    const config = {
-        headers: {Authorization:`Bearer ${jwt}`}
-    };
 
     useEffect(() => {
-        if (effectRan.current === false) {
-            axios.get(apiUrl + "users/" + sessionId + "/dashboard", config)
-                .then(res => {
-                    console.log(res.data)
-                    setDashboardData(res.data);
-                })
-                .catch(err => {
-                    console.log(err)
-                    axios.post(apiUrl + "auth/tokens/refresh/" + sessionId, { accessToken: jwt, refreshToken: rft })
-                        .then(res => {
-                            console.log(res.data)
-                            Object.assign(sessionStorage, {
-                                jwt: res.data.accessToken,
-                                rft: res.data.refreshToken
-                            })
-                            axios.get(apiUrl + "users/" + sessionId + "/dashboard", {headers: {Authorization:`Bearer ${res.data.accessToken}`}})
-                                .then(res => {
-                                    console.log(res.data)
-                                    setDashboardData(res.data);
-                                })
-                                .catch(err => {
-                                    navigate("/login");
-                                })
-                        })
-                        .catch(err => {
-                            console.log(err.data);
-                            sessionStorage.clear();
-                            navigate("/login");
-                        })
-                });
-            return () => { effectRan.current = true };
-        }
+        setDashboardData({
+            userId: localStorage.getItem("userId"),
+            firstName: localStorage.getItem("firstName"),
+            lastName: localStorage.getItem("lastName"),
+            email: localStorage.getItem("email"),
+            instruments: JSON.parse(localStorage.getItem("instruments"))
+        })
     }, [])
 
     return (

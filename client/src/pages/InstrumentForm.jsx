@@ -6,14 +6,15 @@ import axios from "axios"
 const InstrumentForm = () => {
     const apiUrl = useContext(ApiUrlContext);
     const navigate = useNavigate();
-    const userId = sessionStorage.getItem("userId")
+    const userId = localStorage.getItem("userId")
     const [newInstrument, setNewInstrument] = useState({
         Name: "",
         UserId: userId,
         Color: "neutral",
-        Image: ""
+        Image: "BassClar"
     });
-    const jwt = sessionStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
+    const rft = localStorage.getItem('rft');
     const config = {
         headers: {Authorization:`Bearer ${jwt}`}
     };
@@ -28,12 +29,48 @@ const InstrumentForm = () => {
         console.log(config, apiUrl, newInstrument)
         axios.post(apiUrl + "instruments/create", newInstrument, config)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+                let arr = JSON.parse(localStorage.getItem("instruments"))
+                arr = [...arr, res.data]
+                localStorage.setItem("instruments", JSON.stringify(arr))
                 navigate("/dashboard")
             })
             .catch(err => {
-                console.log(err)
-                setErrors(err.response.data.errors);
+                //Find a way to determine if error is unauthorized or something else.
+                if (err.response.status === 401) {
+                    //Do the refresh
+                    console.log(err.response.data)
+                    axios.post(apiUrl + "auth/tokens/refresh/" + userId, {AccessToken: jwt,RefreshToken:rft})
+                        .then(res => {
+                            console.log(res)
+                            localStorage.setItem('jwt', res.data.accessToken);
+                            localStorage.setItem('rft', res.data.refreshToken);
+                                axios.post(apiUrl + "instruments/create", newInstrument, {headers: {Authorization:`Bearer ${res.data.accessToken}`}})
+                                    .then(res => {
+                                        console.log(res.data)
+                                        let arr = JSON.parse(localStorage.getItem("instruments"))
+                                        arr = [...arr, res.data]
+                                        localStorage.setItem("instruments", JSON.stringify(arr))
+                                        navigate("/dashboard")
+                                    })
+                                    .catch(err => {
+                                        if (err.response.status === 400) {
+                                            //Display messages.
+                                            console.log(err.response.data.errors)
+                                            setErrors(err.response.data.errors);
+                                        } else {
+                                            localStorage.clear();
+                                            navigate("/login")
+                                        }
+                                    })
+                        })
+                        .catch(err=>console.log("ERR FROM REFRESH: " + err))
+                }
+                if (err.response.status === 400) {
+                    //Display messages.
+                    console.log(err.response.data.errors)
+                    setErrors(err.response.data.errors);
+                }
             });
     }
     return (

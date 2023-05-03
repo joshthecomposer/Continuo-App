@@ -93,8 +93,8 @@ public class AuthController : ControllerBase
             db.RefreshTokens.Add(newRefreshToken);
             await db.SaveChangesAsync();
             string token = GenerateAccessToken(check.UserId);
-
-            return Ok(new UserWithToken(check, token, newRefreshToken.Value));
+            User? fullUserToReturn = await db.Users.Include(u => u.Instruments).Where(u => u.UserId == check.UserId).FirstOrDefaultAsync();
+            return Ok(new UserWithToken(fullUserToReturn!, token, newRefreshToken.Value));
         }
         else
         {
@@ -162,7 +162,6 @@ public class AuthController : ControllerBase
             {
                 return BadRequest("Claim to this token was invalid.");
             }
-            Console.WriteLine("WE GOT PAST THE VERIFICATION FALSLY");
             var principal = GetPrincipalFromExpiredToken(accessToken);
             if (principal == null)
             {

@@ -20,31 +20,21 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}/dashboard")]
-    public async Task<ActionResult<Object>> GetUserDashboardInfo(int id)
+    public async Task<ActionResult<UserNoPassword>> GetUserDashboardInfo(int id)
     {
         bool IsValid = AuthController.VerifyClaim(AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]), id);
         if (!IsValid)
         {
             return Unauthorized(new { message = "Claim verification failed in GetUserDashboardInfo Action" });
         }
-        Object? result = await _context.Users
-            .Include(u=>u.Instruments)
+        var result = await _context.Users
+            .Include(u => u.Instruments)
             .Where(u => u.UserId == id)
-            .Select(u=>new{
-                UserId = u.UserId,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                Instruments = u.Instruments.Select(i=>new
-                {
-                    InstrumentId = i.InstrumentId,
-                    Name = i.Name,
-                    Color= i.Color,
-                    Image = i.Image
-                })
-            })
             .FirstOrDefaultAsync();
-
-        return Ok(result);
+        if (result == null)
+        {
+            return NotFound(new { message = "Something went wrong. Action: GetUserDashboardInfo. Controller: User" });
+        }
+        return Ok(new UserNoPassword(result));
     }
 }

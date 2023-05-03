@@ -92,7 +92,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
         name: "Instruments",
-        pattern: "instrument/{*url}",
+        pattern: "instrument/{*any}",
         defaults: new { controller = "Public", action = "Index" }
 );
 
@@ -104,7 +104,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "CatchAll",
-    pattern: "{*url}",
+    pattern: "{*any}",
     defaults: new { controller = "Public", action = "CatchRoute" }
 );
 

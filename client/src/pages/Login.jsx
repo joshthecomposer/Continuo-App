@@ -20,13 +20,15 @@ const Login = () => {
         e.preventDefault();
         axios.post(apiUrl + "auth/login", loginUser)
             .then(res => {
-                sessionStorage.clear();
-                Object.assign(sessionStorage, {
+                localStorage.clear();
+                console.log(res.data)
+                Object.assign(localStorage, {
                     jwt : res.data.accessToken,
                     rft : res.data.refreshToken,
                     firstName: res.data.firstName,
                     lastName: res.data.lastName,
-                    userId : res.data.userId
+                    userId: res.data.userId,
+                    instruments: JSON.stringify(res.data.instruments)
                 })
                 navigate("/dashboard");
             })

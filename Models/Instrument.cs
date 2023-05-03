@@ -1,5 +1,6 @@
 #pragma warning disable CS8618
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace MyApp.Models;
 public class Instrument : BaseEntity
@@ -16,5 +17,6 @@ public class Instrument : BaseEntity
     [Required(ErrorMessage = "UserId is required")]
     public int UserId { get; set; }
     //Associated entities;
+    [JsonIgnore]
     public User? User { get; set; }
 }
