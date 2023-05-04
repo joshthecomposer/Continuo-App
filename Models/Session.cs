@@ -9,8 +9,9 @@ public class Session : BaseEntity
     public int SessionId { get; set; }
 
     public bool InProgress { get; set; } = true;
-    [Range(0, int.MaxValue, ErrorMessage="That is 68,000 years of practicing, take a break.")]
-    public int TimeSeconds { get; set; } = 0;
+    public DateTime Start { get; set; } = DateTime.UtcNow;
+    [Range(0, int.MaxValue, ErrorMessage = "That is 68,000 years of practice. Take a break!")]
+    public int Seconds { get; set; } = 0;
 
     //Foreign Keys
     [Required]
