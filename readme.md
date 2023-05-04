@@ -5,10 +5,6 @@ Live Link: *Coming soon (I took it down to save some money)*
 
 ## Technology Stack
 
-### Planning
-* Figma
-* MySQL workbench (ERD Design/Visualization)
-
 ### Front End
 * React (Vite) / Asp.Net MVC
 * TailwindCSS
@@ -21,6 +17,10 @@ Live Link: *Coming soon (I took it down to save some money)*
 ### CI/CD and Deployment
 * AWS Elastic Beanstalk
 * AWS RDS
+
+### Planning
+* Figma
+* MySQL workbench (ERD Design/Visualization)
 
 ## Minimum Viable Product
 - [x] Authentication
