@@ -28,4 +28,5 @@ public class User : BaseEntity
     //Relationships
     public List<Instrument> Instruments { get; set; } = new List<Instrument>();
     public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    public List<Session> Sessions { get; set; } = new List<Session>();
 }

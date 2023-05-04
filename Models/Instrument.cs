@@ -20,4 +20,5 @@ public class Instrument : BaseEntity
     //Associated entities;
     [JsonIgnore]
     public User? User { get; set; }
+    public List<Session> Sessions { get; set; } = new List<Session>();
 }
