@@ -12,25 +12,28 @@ Live Link: *Coming soon (I took it down to save some money)*
 ### Back End
 * Asp.Net Web API
 * Entity Framework Core
-* Custom JWT Authorization with refresh tokens.
+* 1-minute-expiry JWT access tokens with 6-month-expiry refresh tokens on the DB.
 
 ### CI/CD and Deployment
 * AWS Elastic Beanstalk
-* AWS RDS
+* AWS RDS (MySQL Instance)
 
 ### Planning
 * Figma
 * MySQL workbench (ERD Design/Visualization)
 
 ## Minimum Viable Product
-- [x] Authentication
+- [x] Login and registration
 - [x] Authorization views through JWT and Refresh Token
-- [X] Dynamic Calendar View
-- [ ] Many to Many Association between Practice Tasks and Practice sessions.
-- [x] User instrument creation with icon selection
-- [ ] One Practice Session can involve multiple instruments.
+- [ ] Dynamic Calendar View
+- [ ] Quickstart practice session (free-form with no sub-tasks).
+- [ ] Planned practice session (many-to-many association with sub-tasks).
+- [x] User instrument creation with icon/color selection
+- [ ] Robust selection of icons.
 - [ ] Metronome for use during practice.
-- [ ] Practice Session state is cached on DB and can be accessed across any authenticated devices.
+- [ ] Tuning drones for intonation and tuning.
+- [ ] User able to record audio during session. Saved to S3 and served back through CloudFront.
+- [ ] Practice Session state is cached on DB and can be accessed/continued from any device.
 - [x] CI/CD Through AWS Elastic Beanstalk
 
 <img src='./GithubImg/login.png' height='350'> <img src='./GithubImg/register.png' height='350'>
