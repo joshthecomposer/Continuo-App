@@ -5,7 +5,7 @@ Live Link: *Coming soon (I took it down to save some money)*
 
 ## Technology Stack
 
-## Planning
+### Planning
 * Figma
 * MySQL workbench (ERD Design/Visualization)
 
