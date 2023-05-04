@@ -35,6 +35,7 @@ Live Link: *Coming soon (I took it down to save some money)*
 - [ ] User able to record audio during session. Saved to S3 and served back through CloudFront.
 - [ ] Practice Session state is cached on DB and can be accessed/continued from any device.
 - [x] CI/CD Through AWS Elastic Beanstalk
+- [ ] Instructors can be given access to review student practice sessions and audio if desired.
 
 <img src='./GithubImg/login.png' height='350'> <img src='./GithubImg/register.png' height='350'>
 <img src='./GithubImg/dashboard.png' height='350'><br>
