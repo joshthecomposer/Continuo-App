@@ -35,13 +35,19 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setDashboardData({
-            userId: localStorage.getItem("userId"),
-            firstName: localStorage.getItem("firstName"),
-            lastName: localStorage.getItem("lastName"),
-            email: localStorage.getItem("email"),
-            instruments: JSON.parse(localStorage.getItem("instruments"))
-        })
+        if (!localStorage.getItem("userId")) {
+            navigate("/logout")
+        }
+        if (!effectRan.current) {
+            setDashboardData({
+                userId: localStorage.getItem("userId"),
+                firstName: localStorage.getItem("firstName"),
+                lastName: localStorage.getItem("lastName"),
+                email: localStorage.getItem("email"),
+                instruments: JSON.parse(localStorage.getItem("instruments"))
+            })
+        }
+        return()=> effectRan.current = true;
     }, [])
 
     return (
@@ -58,11 +64,8 @@ const Dashboard = () => {
                                         <div
                                             className={`w-20 h-20 rounded-lg overflow-hidden flex flex-col items-center justify-center ${colorMap[i.color]}`}
                                         >
-                                            {/* <div className="flex flex-row justify-end w-full">
-                                                <div className="w-[20px] h-[20px] bg-neutral-300"></div>
-                                            </div> */}
-                                            {instrumentMap[i.image]}
-                                            {i.name}
+                                            <div className="z-0">{instrumentMap[i.image]}</div>
+                                            <p className={i.name.length < 13 ? "text-base" : "text-xs"}>{i.name}</p>
                                         </div>
                                     </Link>
                                 ))
@@ -74,7 +77,7 @@ const Dashboard = () => {
                     }
                 </div>
                 <div className="py-2 px-2 max-h-1/2 flex flex-col flex-wrap gap-3 justify-center items-center bg-opacity-10">
-                    <h1 className="text-xl uppercase font-oswald font-thin">Recent <span className="font-bold">Activity</span></h1>
+                    <h1 className="text-xl uppercase font-oswald font-thin">Recent <span className="font-bold">Sessions</span></h1>
                     <div className="w-full px-5 flex flex-col gap-3">
                         <div className="w-full bg-neutral-700">
                             

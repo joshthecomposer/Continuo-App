@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import InstrumentForm from './pages/InstrumentForm'
 import PracticeSession from './pages/PracticeSession'
+import Logout from './components/Logout'
 import { ApiUrlContext } from './components/ApiUrlContext'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     return (
         <ApiUrlContext.Provider value={apiUrl}>
             <Routes>
+                <Route path="/logout" element={<Logout/>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/" element={<Home />} />

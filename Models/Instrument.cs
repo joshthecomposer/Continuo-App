@@ -9,6 +9,7 @@ public class Instrument : BaseEntity
     public int InstrumentId { get; set; }
     [Required(ErrorMessage = "Field is required.")]
     [MinLength(2, ErrorMessage = "At least two characters.")]
+    [MaxLength(15, ErrorMessage="Max 15 characters")]
     public string Name { get; set; }
     public string Color { get; set; } = "neutral";
     [Required]

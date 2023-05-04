@@ -71,6 +71,11 @@ app.MapControllerRoute(
         pattern: "login",
         defaults: new { controller = "Public", action = "Index" }
 );
+app.MapControllerRoute(
+        name: "Logout",
+        pattern: "logout",
+        defaults: new { controller = "Public", action = "Index" }
+);
 
 app.MapControllerRoute(
         name: "Register",
