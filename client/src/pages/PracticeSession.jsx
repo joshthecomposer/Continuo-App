@@ -1,18 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom'
+import axios from 'axios';
 import MobileNav from '../components/MobileNav';
+import { ApiUrlContext } from '../components/ApiUrlContext';
 
 const PracticeSession = (props) => {
-    const { currentTime, setCurrentTime } = props;
-    const [searchParams, setSearchParams] = useSearchParams();
-    
+    const { currentTime, setCurrentTime } = props
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [activeSession, setActiveSession] = useState()
+    const apiUrl = useContext(ApiUrlContext)
+    const userId = localStorage.getItem('userId')
+    const jwt = localStorage.getItem('jwt')
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(currentTime + 1);
-        }, 1000)
-        return () => clearInterval(interval);
-    },[currentTime])
+        axios.get(`${apiUrl}/sessions/${userId}/latest`, { headers: { Authorization: `Bearer ${jwt}` } })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
+    
     return (
         <>
             <MobileNav />
