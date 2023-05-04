@@ -1,7 +1,7 @@
 # Continuo
 Musician practice journal app
 
-Live Link: *Coming soon (trying to save money)*
+Live Link: *Coming soon (I took it down to save some money)*
 
 ## Technology Stack
 
