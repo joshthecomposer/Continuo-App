@@ -60,7 +60,7 @@ const Dashboard = () => {
                         {
                             dashboardData.instruments.length === 0 ? <p className="bg-neutral-800 p-2 rounded-lg">No Instruments, <Link className="underline italic" to="/instrument/create">Add One</Link></p> :
                                 dashboardData.instruments.map((i) => (
-                                    <Link key={i.instrumentId} to={`/instrument/practice?instrument=${i.name}`}>
+                                    <Link key={i.instrumentId} to={`/instrument/practice?instrument=${i.name}&instrumentId=${i.instrumentId}`}>
                                         <div
                                             className={`w-20 h-20 rounded-lg overflow-hidden flex flex-col items-center justify-center ${colorMap[i.color]}`}
                                         >
